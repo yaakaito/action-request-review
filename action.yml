@@ -1,0 +1,15 @@
+name: 'Request review'
+description: ''
+inputs:
+    teamReviewers:
+        required: false
+    reviewers:
+        required: false
+    githubToken:
+        required: true
+outputs:
+    reviewers:
+        description: 'Requested reviewers (comma separated)'
+runs:
+    using: 'node12'
+    main: 'dist/index.js'
