@@ -24,5 +24,6 @@ jobs:
       - uses: yaakaito/action-request-review@master
         with:
           teamReviewers: 'frontend_team'
+          teamApiGithubToken: <チームを設定する場合閲覧権限のあるtokenが必要です>
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 ```

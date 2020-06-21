@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const action = async ({ context , reviewers, teamReviewers, token }) => {
+const action = async ({ context , reviewers, teamReviewers, token, teamApiToken }) => {
 
     try {
         const client = axios.create({
@@ -28,6 +28,13 @@ const action = async ({ context , reviewers, teamReviewers, token }) => {
                 if (!teamReviewers || teamReviewers.length === 0) {
                     return []
                 }
+                const client = axios.create({
+                    baseURL: 'https://api.github.com',
+                    headers: {
+                        'Authorization': `bearer ${teamApiToken}`,
+                        'Accept': 'application/vnd.github.mockingbird-preview'
+                    }
+                })
                 let members = []
                 for(const team of teamReviewers) {
                     members = members.concat((await client.get(`/orgs/${context.repo.split('/')[0]}/teams/${team}/members`)).data.map(({ login }) => login))
