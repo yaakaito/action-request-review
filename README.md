@@ -21,12 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Dump
-        env:
-          CONTEXT: ${{ toJson(github) }}
-        run: echo $CONTEXT
-      - uses: ./.github/actions/assign-reviewer
+      - uses: yaakaito/action-request-review@master
         with:
           teamReviewers: 'frontend_team'
           githubToken: ${{ secrets.GITHUB_TOKEN }}
