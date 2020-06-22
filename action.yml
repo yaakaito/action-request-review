@@ -7,8 +7,6 @@ inputs:
         required: false
     githubToken:
         required: true
-    teamApiGithubToken:
-        required: false
 outputs:
     reviewers:
         description: 'Requested reviewers (comma separated)'

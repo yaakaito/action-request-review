@@ -9375,7 +9375,6 @@ const run = async () => {
             teamReviewers: core.getInput('teamReviewers') ? core.getInput('teamReviewers').split(',') : undefined,
             reviewers: core.getInput('reviewers') ? core.getInput('reviewers').split(',') : undefined,
             token: core.getInput('githubToken'),
-            teamApiToken: core.getInput('teamApiGithubToken')
         }
 
         const reviewers = await action(options)
@@ -12501,7 +12500,7 @@ exports.withCustomRequest = withCustomRequest;
 
 const axios = __webpack_require__(53)
 
-const action = async ({ context , reviewers, teamReviewers, token, teamApiToken }) => {
+const action = async ({ context , reviewers, teamReviewers, token }) => {
 
     try {
         const client = axios.create({
@@ -12529,13 +12528,6 @@ const action = async ({ context , reviewers, teamReviewers, token, teamApiToken 
                 if (!teamReviewers || teamReviewers.length === 0) {
                     return []
                 }
-                const client = axios.create({
-                    baseURL: 'https://api.github.com',
-                    headers: {
-                        'Authorization': `bearer ${teamApiToken}`,
-                        'Accept': 'application/vnd.github.mockingbird-preview'
-                    }
-                })
                 let members = []
                 for(const team of teamReviewers) {
                     members = members.concat((await client.get(`/orgs/${context.repo.split('/')[0]}/teams/${team}/members`)).data.map(({ login }) => login))
