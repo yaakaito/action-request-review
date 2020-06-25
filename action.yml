@@ -7,6 +7,9 @@ inputs:
         required: false
     githubToken:
         required: true
+    ignore:
+        description: 'Ignore head branches (minimatch style)'
+        required: true
 outputs:
     reviewers:
         description: 'Requested reviewers (comma separated)'

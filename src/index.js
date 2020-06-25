@@ -18,6 +18,7 @@ const run = async () => {
             teamReviewers: core.getInput('teamReviewers') ? core.getInput('teamReviewers').split(',') : undefined,
             reviewers: core.getInput('reviewers') ? core.getInput('reviewers').split(',') : undefined,
             token: core.getInput('githubToken'),
+            ignore: core.getInput('ignore') || undefined
         }
 
         const reviewers = await action(options)

@@ -1,6 +1,7 @@
 const axios = require('axios')
+const minimatch = require('minimatch')
 
-const action = async ({ context , reviewers, teamReviewers, token }) => {
+const action = async ({ context , reviewers, teamReviewers, token, ignore }) => {
 
     try {
         const client = axios.create({
@@ -16,9 +17,10 @@ const action = async ({ context , reviewers, teamReviewers, token }) => {
             state,
             draft,
             requested_reviewers,
+            head: { ref }
         } = (await client.get(`/repos/${context.repo}/pulls/${context.pull_number}`)).data
 
-        if (state !== 'open' || draft || includesWipWords(title)) {
+        if (state !== 'open' || (ignore && minimatch(ref, ignore))|| draft || includesWipWords(title)) {
             return null
         }
 
