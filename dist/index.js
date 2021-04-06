@@ -13822,7 +13822,18 @@ const action = async ({ context , reviewers, teamReviewers, token, ignore }) => 
             return null
         }
 
-        const reviews = (await client.get(`/repos/${context.repo}/pulls/${context.pull_number}/reviews?per_page=100`)).data
+        const timeline = []
+        let page = 1
+        while(page < 100) {
+            const data = (await client.get(`/repos/${context.repo}/issues/${context.pull_number}/timeline?per_page=100&page=${page++}`)).data
+            timeline.push(...data)
+            if (data.length < 100) {
+                break
+            }
+        }
+        const reviewRemoved = timeline.filter(({ event, requested_reviewer }) => ['review_request_removed'].includes(event) && requested_reviewer).map(({ requested_reviewer }) => requested_reviewer.login)
+        const reviewedLogins = timeline.filter(({ event }) => ['reviewed'].includes(event)).map(({ user }) => user.login)
+
         const members = [
             ...await (async function() {
                 if (!teamReviewers || teamReviewers.length === 0) {
@@ -13838,7 +13849,8 @@ const action = async ({ context , reviewers, teamReviewers, token, ignore }) => 
         ]
 
         const assignedOrReviewed = [
-            ...reviews.map(({ user: { login }}) => login),
+            ...reviewRemoved,
+            ...reviewedLogins,
             ...requested_reviewers.map(({ login }) => login)
         ].some(reviewer => members.includes(reviewer))
 
