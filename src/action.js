@@ -24,7 +24,7 @@ const action = async ({ context , reviewers, teamReviewers, token, ignore }) => 
             return null
         }
 
-        const timelines = (await client.get(`/repos/${context.repo}/issues/${context.pull_number}/timeline`)).data
+        const reviews = (await client.get(`/repos/${context.repo}/pulls/${context.pull_number}/reviews`)).data
         const members = [
             ...await (async function() {
                 if (!teamReviewers || teamReviewers.length === 0) {
@@ -40,7 +40,7 @@ const action = async ({ context , reviewers, teamReviewers, token, ignore }) => 
         ]
 
         const assignedOrReviewed = [
-            ...timelines.filter(({ event }) => event === 'reviewed').map(({ user: { login }}) => login),
+            ...reviews.map(({ user: { login }}) => login),
             ...requested_reviewers.map(({ login }) => login)
         ].some(reviewer => members.includes(reviewer))
 
