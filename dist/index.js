@@ -13822,7 +13822,7 @@ const action = async ({ context , reviewers, teamReviewers, token, ignore }) => 
             return null
         }
 
-        const reviews = (await client.get(`/repos/${context.repo}/pulls/${context.pull_number}/reviews`)).data
+        const reviews = (await client.get(`/repos/${context.repo}/pulls/${context.pull_number}/reviews?per_page=100`)).data
         const members = [
             ...await (async function() {
                 if (!teamReviewers || teamReviewers.length === 0) {
