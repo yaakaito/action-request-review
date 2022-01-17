@@ -13,7 +13,7 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^3.0.0",
     "@zeit/ncc": "^0.22.3",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "minimatch": "^3.0.4"
   }
 }
